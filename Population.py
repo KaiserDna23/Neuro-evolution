@@ -12,7 +12,8 @@ class Population:
         self.population = []
         self.extinct = False
         self.generations_scores = {}
-        self.best = 0
+        self.highest_fitness = 0
+        self.best_score = 0
         self.__generate_population__(nber_individuals)
 
     #################################################################
@@ -24,16 +25,24 @@ class Population:
         return self.population
 
     # get the best score
-    def get_best(self):
-        return self.best
+    def get_best_score(self):
+        return self.best_score
+
+    # return highest fitness score
+    def get_best_fitness(self):
+        return self.highest_fitness
 
     # get extinct
-    def get_exinct(self):
-        return self.extinct
+    def get_extinct(self):
+        return True if len(self.population) <= 0 else False
 
     # set the extinction alarm
     def set_extinct(self):
         self.extinct = True
+
+    # set population
+    def set_population(self, population):
+        self.population = population
 
     # get individual
     def get_element(self, index):
@@ -61,7 +70,7 @@ class Population:
             x_, y_ = self.__rand_position__()
             self.population.append(Bird(x_, y_))
 
-        self.best = self.population[0]
+        self.best_score = self.population[0]
 
 
     def cal_fitness(self):
@@ -71,6 +80,7 @@ class Population:
         This ensures that every value will be < 1, and so doing, represents each bird probability of being chosen.
         """
         sum_ = 0
+        sorted_ = {}
         # Get the sum of all scores
         for i in range(0, len(self.population)-1):
             sum_ += self.population[i].get_score()
@@ -78,9 +88,14 @@ class Population:
         for i in range(0, len(self.population)-1):
             if self.population[i].get_score() <= 0 or sum == 0:
                 fitness = 0
+                self.population[i].set_fitness(fitness)
+                sorted_[fitness] = self.population[i]
             else:
                 fitness = self.population[i].get_score()/sum_
-            self.population[i].set_fitness(fitness)
+                self.population[i].set_fitness(fitness)
+                sorted_[fitness] = self.population[i]
+
+        self.highest_fitness = sorted(sorted_.keys())[0]
 
 
     def __selection__(self):
@@ -89,27 +104,31 @@ class Population:
         :return: chosen_ones, a couple of individuals
         """
         scores_ = {}
-        sorted_population = []
+
 
         if len(self.population) >= 1:
             # Relate score to individual, then sort by score
             for i in range(0, len(self.population) - 1):
-                scores_.update({self.population[i].get_fitness(): self.population[i]})
+                scores_[self.population[i].get_fitness()] = self.population[i]
 
-
-            # Sort the keys in reverse order and then return the highest 4
+            # Sort the keys(fitness score) in reverse order and then return the highest
             keys = sorted(scores_.keys(), reverse=True)
-            if len(keys) >= 1:
-                for key in keys[:2]:
-                    sorted_population.append(scores_[key])
-                # Get and set the best score in generation
-                #self.best = sorted_population[0].get_score()
-                return [sorted_population[0], sorted_population[1]]
-            else:
-                sorted_population.append(scores_[keys[0]])
-                # Get and set the best score in generation
-                #self.best = sorted_population[0].get_score()
-                return [sorted_population[0]]
+            # With keys sorted the best/ highest is located at first position
+            key = keys[0]
+            self.best_score = scores_[key].get_score()
+            return scores_[key]
+
+            # if len(keys) >= 1:
+            #     for key in keys[:2]:
+            #         sorted_population.append(scores_[key])
+            #     # Get and set the best score in generation
+            #     #self.best = sorted_population[0].get_score()
+            #     return [sorted_population[0], sorted_population[1]]
+            # else:
+            #     sorted_population.append(scores_[keys[0]])
+            #     # Get and set the best score in generation
+            #     #self.best = sorted_population[0].get_score()
+            #     return [sorted_population[0]]
 
 
 
@@ -122,18 +141,16 @@ class Population:
         :return: new_population,  a list containing the new generation
         """
         new_population = []
-        chosen_ones = self.__selection__()
+        chosen_one = self.__selection__()
         # Use most fitted instances to reproduce with
-        if len(self.population) >= 1 and len(chosen_ones) >= 1:
-            for instance in chosen_ones:
-                if instance not in self.population:
-                    for element in self.population:
+        if len(self.population) >= 1:
+            for element in self.population:
+                if chosen_one is not element:
                         x_, y_ = self.__rand_position__()
-                        new_population.append(Bird(x_, y_, parents=[instance, element]).mutation(0.1))
+                        new_population.append(Bird(x_, y_, parents=[chosen_one, element]).mutation(0.1))
 
             # add the parent to the generation
-            for element in chosen_ones:
-                new_population.append(element)
+            new_population.append(chosen_one)
 
             return new_population
 
@@ -148,7 +165,7 @@ class Population:
                 self.population.pop(i)
 
     def save_best(self):
-        best = self.__selection__()[0]
+        best = self.__selection__()
         return best
 
     def mass_prediction(self):

@@ -26,7 +26,7 @@ class Bird:
     """
 
     # class attributes
-    lift_force = -1
+    lift_force = -4
     brain = None
     image = "Images/bluebird-downflap.png"
 
@@ -90,9 +90,6 @@ class Bird:
     # Get mask for collision
     def get_mask(self):
         return game.mask.from_surface(self.image)
-
-    def set_gravity(self, grav):
-        self.gravity = grav
 
     # Assert the bird itself to check if it collied against a pipe
     def check_collision(self, pipe_rect):

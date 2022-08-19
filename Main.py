@@ -4,11 +4,14 @@ import concurrent.futures
 import random
 import sys
 import datetime
+import time
+
 import pygame as game
 from multiprocessing import Process, Pool, freeze_support
 
 # Importing Game framework
 from Population import Population
+from Genetic_evaluation import GeneticEvaluation
 from Pipe import Pipe, Base
 
 # initialise font
@@ -34,7 +37,7 @@ clock = game.time.Clock()
 STATS = game.font.SysFont("comicsans", 50)
 
 # physics
-gravity = 0.5
+gravity = 2
 
 # Creating the game screen
 width =  576
@@ -66,6 +69,9 @@ def draw_window(screen_, birds, pipes, base, score):
     screen_.blit(background, (0, 0))
     # for bird in birds:
     #     bird.draw(screen_)
+    #
+    # for pipe in pipes:
+    #     pipe.draw(screen_)
 
     proc = []
     proc2 = []
@@ -103,18 +109,21 @@ def draw_window(screen_, birds, pipes, base, score):
 
 
 def main(population):
-    # return True if population got extinct
-    return_flag = False
     population_ = population
     screen_ = game.display.set_mode((width, length))
     birds = population_.get_population()
     pipes = [Pipe(550)]
     base_ = Base(650)
-
+    end_clock = 0
+    score = 0
     running_ = True
+
+    # start timing
+    start_clock = time.perf_counter()
 
     # game loop
     while running_:
+
         clock.tick(600)
         for event_ in game.event.get():
             if event_.type == game.QUIT:
@@ -126,24 +135,15 @@ def main(population):
             #     if event_.key == game.K_SPACE:
             #         [bird.jump() for bird in birds]
 
-        # moving birds* and updating pipes input
+        # Moving birds
         for bird in birds:
+            bird.falling(gravity)
             # set incoming pipes
-            bird.set_gravity(gravity)
-
             bird.set_incoming_pipes(pipes)
             # give a bit of fitness
-            bird.fitness_score += 0.1
-
-        # for bird in birds:
-        #     # predict next move
-        #     wait()
-        #     bird.predict()
+            #bird.fitness_score += 0.1
 
         # Prediction
-        for bird in population_.get_population():
-            bird.falling(gravity)
-
         population_.mass_prediction()
 
         add_pipe = False
@@ -152,7 +152,7 @@ def main(population):
             for x, bird in enumerate(birds):
                 if pipe.collied(bird):
                     # reduce fitness score and don't favour bird that hit the pipe
-                    bird.fitness_score -= 1
+                    #bird.fitness_score -= 1
                     # remove the bird
                     birds.pop(x)
 
@@ -169,9 +169,11 @@ def main(population):
 
         # Create back another pipe since one is gone
         if add_pipe:
-            for bird in birds:
-                bird.add_score()
+            #for bird in birds:
+             #   bird.add_score()
             pipes.append(Pipe(550))
+            # bird has successfully pass, so increase point counter
+            score += 1
 
         # remove pipes
         for r in remove_list:
@@ -182,20 +184,27 @@ def main(population):
             if bird.y_position + bird.image.get_height() >= 650 or bird.y_position < 0:
                 birds.pop(x)
 
+
         # Check if population got extinct
-        if population_.get_exinct() is True:
+        if len(birds) <= 0:
+            end_clock = time.perf_counter()
             print('EXTINCT')
+            running_ = False
 
         base_.move()
-        draw_window(screen_, birds, pipes, base_, population.get_best().get_score())
+        draw_window(screen_, birds, pipes, base_,score)
 
+    # Calculate the time spend before gotten extinct
+    time_taken = round(end_clock - start_clock, 2)
 
-
+    return start_clock, end_clock, score
 
 def run():
     # Create population
     population = Population(3)
-    main(population)
+    eval_pop = GeneticEvaluation(population, 5)
+    eval_pop.run(main)
+    #print(main(3))
 
 
 

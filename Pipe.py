@@ -45,7 +45,11 @@ class Pipe:
 
     def collied(self, bird):
         """
-        Collision method basd on mask generated from the element's postion and
+        Collision method basd on mask generated from the element's postion.
+        Grant a score if the bird has pas the pipes + 30 pixels and its inbetween.
+
+        :param bird: Bird object
+        :return bool: Return true if collision occur else False
         """
         bird_mask = bird.get_mask()
         top_mask = game.mask.from_surface(self.PIPE_TOP)
@@ -60,8 +64,14 @@ class Pipe:
 
         if top_point or bottom_point:
             return True
-        else:
-            return False
+
+        # Check if bird is inbetween the 2 pipes
+        # if the bird has pas the pipes + 30 pixels and its inbetween, grant a score
+        if bird.x_position == self.x + self.image.get_width() + 30:
+            if self.top < bird.y_position < self.bottom:
+                bird.add_score()
+
+        return False
 
 
 #
