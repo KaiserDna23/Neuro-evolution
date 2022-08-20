@@ -1,18 +1,15 @@
 # imports
 #---- Importing Machine Learning Framework
-import concurrent.futures
-import random
-import sys
 import datetime
 import time
+from multiprocessing import Process
 
 import pygame as game
-from multiprocessing import Process, Pool, freeze_support
 
-# Importing Game framework
-from Population import Population
 from Genetic_evaluation import GeneticEvaluation
 from Pipe import Pipe, Base
+# Importing Game framework
+from Population import Population
 
 # initialise font
 game.font.init()
@@ -110,6 +107,7 @@ def draw_window(screen_, birds, pipes, base, score):
 
 def main(population):
     population_ = population
+    back_up = []
     screen_ = game.display.set_mode((width, length))
     birds = population_.get_population()
     pipes = [Pipe(550)]
@@ -154,6 +152,7 @@ def main(population):
                     # reduce fitness score and don't favour bird that hit the pipe
                     #bird.fitness_score -= 1
                     # remove the bird
+                    back_up.append(bird)
                     birds.pop(x)
 
                 # if bird passes underneath, success
@@ -182,6 +181,7 @@ def main(population):
         for x, bird in enumerate(birds):
             # check if we hit the floor
             if bird.y_position + bird.image.get_height() >= 650 or bird.y_position < 0:
+                back_up.append(bird)
                 birds.pop(x)
 
 
@@ -197,7 +197,7 @@ def main(population):
     # Calculate the time spend before gotten extinct
     time_taken = round(end_clock - start_clock, 2)
 
-    return start_clock, end_clock, score
+    return start_clock, end_clock, score, back_up
 
 def run():
     # Create population

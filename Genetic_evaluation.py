@@ -45,7 +45,10 @@ class GeneticEvaluation:
             # increase generation count
             self.count += 1
             # run the environment
-            start, end, best_score = env(population_)
+            start, end, best_score, back_up = env(population_)
+            # Set back population
+            population_ = population_.set_population(back_up)
+            print(population_)
             # Calculate fitness score, this will help in the creation of the next generation
             population_.cal_fitness()
             # get the best fitness score
@@ -56,6 +59,7 @@ class GeneticEvaluation:
 
             # Next step create mating pool and produce the next generation
             next_gen_list = population_.matting_pool()
+            print(next_gen_list)
             next_gen = population_.set_population(population)
 
             # replace the old population

@@ -4,13 +4,10 @@ import random
 import numpy as np
 # ----- Importing Game framework
 import pygame as game
-import tensorflow as tf
-from tensorflow import keras
 from keras import layers
-
 # Suppress prediction warning
 from tensorflow import compat
-from tensorflow.python.keras import Input
+from tensorflow import keras
 
 compat.v1.disable_eager_execution()
 

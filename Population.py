@@ -1,8 +1,10 @@
 # Population class
 
+from multiprocessing import Process
 from random import randint
+
 from Bird import Bird
-from multiprocessing import Process, Pool
+
 
 class Population:
     width_screen = 576
@@ -70,7 +72,7 @@ class Population:
             x_, y_ = self.__rand_position__()
             self.population.append(Bird(x_, y_))
 
-        self.best_score = self.population[0]
+        #self.best_score = self.population[0]
 
 
     def cal_fitness(self):
@@ -82,21 +84,23 @@ class Population:
         sum_ = 0
         sorted_ = {}
         # Get the sum of all scores
-        for i in range(0, len(self.population)-1):
+        for i in range(0, len(self.population)):
             sum_ += self.population[i].get_score()
 
-        for i in range(0, len(self.population)-1):
-            if self.population[i].get_score() <= 0 or sum == 0:
+        for i in range(0, len(self.population)):
+            if self.population[i].get_score() <= 0 or sum <= 0:
                 fitness = 0
                 self.population[i].set_fitness(fitness)
+                sorted_.update({str(fitness) : self.population[i]})
 
             else:
                 fitness = self.population[i].get_score()/sum_
-                self.population[i].set_fitness(fitness)
+                self.population[i].set_fitness(int(fitness))
+                sorted_.update({str(fitness) : self.population[i]})
 
-            sorted_[fitness] = self.population[i]
-
-        print( sorted_)
+        print(self.population)
+        print(sorted_)
+        print(sorted_.keys())
         self.highest_fitness = sorted(list(sorted_.keys()))[0]
 
 
@@ -110,8 +114,8 @@ class Population:
 
         if len(self.population) >= 1:
             # Relate score to individual, then sort by score
-            for i in range(0, len(self.population) - 1):
-                scores_[self.population[i].get_fitness()] = self.population[i]
+            for i in range(0, len(self.population)):
+                scores_.update({str(self.population[i].get_fitness()): self.population[i]})
 
             # Sort the keys(fitness score) in reverse order and then return the highest
             keys = sorted(list(scores_.keys()), reverse=True)

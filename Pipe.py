@@ -5,6 +5,7 @@ import random
 
 import pygame as game
 
+
 class Pipe:
     GAP = 200
     VELOCITY = 5
