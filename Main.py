@@ -201,7 +201,7 @@ def main(population):
 
 def run():
     # Create population
-    population = Population(3)
+    population = Population(1)
     eval_pop = GeneticEvaluation(population, 5)
     eval_pop.run(main)
     #print(main(3))

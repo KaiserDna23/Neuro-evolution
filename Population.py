@@ -89,13 +89,15 @@ class Population:
             if self.population[i].get_score() <= 0 or sum == 0:
                 fitness = 0
                 self.population[i].set_fitness(fitness)
-                sorted_[fitness] = self.population[i]
+
             else:
                 fitness = self.population[i].get_score()/sum_
                 self.population[i].set_fitness(fitness)
-                sorted_[fitness] = self.population[i]
 
-        self.highest_fitness = sorted(sorted_.keys())[0]
+            sorted_[fitness] = self.population[i]
+
+        print( sorted_)
+        self.highest_fitness = sorted(list(sorted_.keys()))[0]
 
 
     def __selection__(self):
@@ -112,7 +114,7 @@ class Population:
                 scores_[self.population[i].get_fitness()] = self.population[i]
 
             # Sort the keys(fitness score) in reverse order and then return the highest
-            keys = sorted(scores_.keys(), reverse=True)
+            keys = sorted(list(scores_.keys()), reverse=True)
             # With keys sorted the best/ highest is located at first position
             key = keys[0]
             self.best_score = scores_[key].get_score()
