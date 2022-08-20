@@ -30,11 +30,12 @@ class Bird:
     # Constructor
     def __init__(self, x, y, **kwargs) -> None:
 
-        if 'parents' in kwargs:
-            self.parent1 = kwargs['parents'][0]
-            self.parent2 = kwargs['parents'][1]
+        if 'parent1' and 'parent2' in kwargs:
+            self.parent1 = kwargs['parent1']
+            self.parent2 = kwargs['parent2']
             self.brain = self.create_brain()
             parent1_brain = self.parent1.getBrain()
+            parent2_brain = self.parent2.getBrain()
             parent2_brain = self.parent2.getBrain()
 
             if self.parent1.isDominant:

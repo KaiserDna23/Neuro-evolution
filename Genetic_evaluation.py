@@ -59,6 +59,8 @@ class GeneticEvaluation:
             self.report(start, end, best_score, best_fitness)
 
             # Next step create mating pool and produce the next generation
+            print(population)
+            print(population.get_population())
             next_gen_list = self.matting_pool(population_.get_population())
             print(next_gen_list)
             next_gen = population_.set_population(next_gen_list)
@@ -117,13 +119,14 @@ class GeneticEvaluation:
         """
         new_population = []
         chosen_one = self.__selection__(population)
+        chosen_one.isDominant = True
         # Use most fitted instances to reproduce with
         if len(population) >= 1:
             for element in population:
-                if chosen_one is not element:
+                if element != chosen_one:
                     x_, y_ = self.population.__rand_position__()
-                    new_population.append(Bird(x_, y_, parents=[chosen_one, element]).mutation(0.1))
-
+                    new_population.append(Bird(x_, y_, parent1=chosen_one, parent2=element).mutation(0.1))
+                    print(new_population)
             # add the parent to the generation
             new_population.append(chosen_one)
 

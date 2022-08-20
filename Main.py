@@ -153,10 +153,8 @@ def main(id : int, population):
         for pipe in pipes:
             for x, bird in enumerate(birds):
                 if pipe.collied(bird):
-                    # reduce fitness score and don't favour bird that hit the pipe
-                    #bird.fitness_score -= 1
-                    # remove the bird
                     back_up.append(bird)
+                    # remove the bird
                     birds.pop(x)
 
                 # if bird passes underneath, success

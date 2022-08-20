@@ -12,3 +12,11 @@ ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Be
 1    |   19452.02      |   19562.71     |   111         |      1      |  0
 ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
 1    |   19727.72      |   19911.34     |   184         |      1      |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   22694.0      |   22752.0     |   58         |      0      |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   22957.94      |   23140.77     |   183         |      1      |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   23445.76      |   23512.56     |   67         |      0      |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   24097.41      |   24160.75     |   63         |      0      |  0
