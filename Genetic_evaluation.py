@@ -29,8 +29,13 @@ class GeneticEvaluation:
         """
         population_ = self.population
         if callable(env):
+            next_gen = population_
+            print(next_gen)
             for i in range(self.max_generation):
-                population_ = self.run_generation(env, population_)
+                next_gen = self.run_generation(env, next_gen)
+
+            print('*'*90)
+            print('Maximum generation reached')
 
     def run_generation(self, env, population: Population):
         """
@@ -49,7 +54,7 @@ class GeneticEvaluation:
             start, end, best_score, back_up = env(self.count, population_)
             # Set back population
             population_.set_population(back_up)
-            #print(len(population_.get_population()))
+
             # Calculate fitness score, this will help in the creation of the next generation
             self.cal_fitness(population_.get_population())
             # get the best fitness score
@@ -59,19 +64,16 @@ class GeneticEvaluation:
             self.report(start, end, best_score, best_fitness)
 
             # Next step create mating pool and produce the next generation
-            print(population)
-            print(population.get_population())
+
             next_gen_list = self.matting_pool(population_.get_population())
-            print(next_gen_list)
-            next_gen = population_.set_population(next_gen_list)
+            #print(next_gen_list)
+            # Nex population, replace the old population
+            population_.set_population(next_gen_list)
 
             print('\n ')
             print('+'*90)
             print('> NEXT GENERATION CREATED\n ')
-
-
-            # replace the old population
-            population_ = next_gen
+            print('+' * 90, '\n')
 
             return population_
 
@@ -125,7 +127,7 @@ class GeneticEvaluation:
             for element in population:
                 if element != chosen_one:
                     x_, y_ = self.population.__rand_position__()
-                    new_population.append(Bird(x_, y_, parent1=chosen_one, parent2=element).mutation(0.1))
+                    new_population.append(Bird(x_, y_, parent1=chosen_one, parent2=element ))
                     print(new_population)
             # add the parent to the generation
             new_population.append(chosen_one)
@@ -155,9 +157,6 @@ class GeneticEvaluation:
                 population[i].set_fitness(int(fitness))
                 sorted_.update({str(fitness): population[i]})
 
-        # print(population)
-        # print(sorted_)
-        # print(sorted_.keys())
         self.population.set_highestFitness(sorted(list(sorted_.keys()))[0])
 
     def __selection__(self, population):

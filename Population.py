@@ -72,22 +72,6 @@ class Population:
             x_, y_ = self.__rand_position__()
             self.population.append(Bird(x_, y_))
 
-        #self.best_score = self.population[0]
-
-
-
-            # if len(keys) >= 1:
-            #     for key in keys[:2]:
-            #         sorted_population.append(scores_[key])
-            #     # Get and set the best score in generation
-            #     #self.best = sorted_population[0].get_score()
-            #     return [sorted_population[0], sorted_population[1]]
-            # else:
-            #     sorted_population.append(scores_[keys[0]])
-            #     # Get and set the best score in generation
-            #     #self.best = sorted_population[0].get_score()
-            #     return [sorted_population[0]]
-
 
     def remove_death(self):
         """

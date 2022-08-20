@@ -108,6 +108,12 @@ def draw_window(screen_, birds, pipes, base, score, count):
 
 
 def main(id : int, population):
+    """
+    Main program loop. Where the agent get challenged.
+
+    :param id: Generation count
+    :param population: Population list
+    """
 
     generation_count = id
     population_ = population
@@ -139,6 +145,7 @@ def main(id : int, population):
 
         # Moving birds
         for bird in birds:
+            #print(f"{type(bird)} : {bird}")
             bird.falling(gravity)
             # set incoming pipes
             bird.set_incoming_pipes(pipes)
@@ -203,7 +210,7 @@ def main(id : int, population):
 
 def run():
     # Create population
-    population = Population(3)
+    population = Population(2)
     eval_pop = GeneticEvaluation(population, 5)
     eval_pop.run(main)
     #print(main(3))
@@ -212,211 +219,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-
-#########################################################################
-############################## Game variables ###########################
-#########################################################################
-
-#---
-
-#
-# timer_out = False
-#
-# running = True
-#
-# print(">> Initialisation ...")
-#
-# # Generate population
-# generation = 0
-# population = Population()
-# population.generate_population(1)
-#
-#
-# # Obstacle
-# bottom_pipe, upper_pipe = create_pipes()
-# # Pipe time, every 1.4 Sec
-# pipe_time = game.USEREVENT
-# game.time.set_timer(pipe_time, 1000)
-#
-#
-# # Game loop
-# ############
-# while running:
-#     # looping through every event
-#     for event in game.event.get():
-#         # if the event is closing then close
-#         if event.type == game.QUIT:
-#             game.quit()
-#             sys.exit()
-#
-#         # if the event is a key press, and if the key is space jump
-#         if event.type == game.KEYDOWN:
-#             if event.key == game.K_SPACE:
-#                 for indi in population.get_population():
-#                     indi.jump()
-#                     indi.predict()
-#                     #print("Up -1" if action == 1 else "Down -0")
-#
-#
-#         # if the event is the pipe time span, create new pipes
-#         if event.type == pipe_time:
-#             pipe_list.extend(create_pipes())
-#
-#     # Load background image
-#     screen.blit(background, (0, 0))
-#
-#     # --- PIPES ---
-#     draw_pipes(pipe_list)
-#     move_pipes(pipe_list)
-#
-#     # Check for collision if collision occur the player dies, otherwise increase score
-#     for i in range(len(pipe_list)-1):
-#         pipe = pipe_list[i]
-#         #if player.hasColleid(pipe.left, pipe.top):
-#         for bird in population.get_population():
-#             if bird.hasColleid(pipe.left, pipe.top):
-#                 bird.die()
-#
-#         else:
-#             for bird in population.get_population():
-#                 bird.grantScore(pipe, pipe_list[i+1])
-#
-#     #--- PLAYER ---
-#     # show player and move player
-#     for bird in population.get_population():
-#         screen.blit(bird.image, (bird.x_position, bird.y_position))
-#         # Player movement
-#         bird.falling(gravity)
-#         # Update players pipe vision
-#         bird.set_incoming_pipes(pipe_list)
-#
-#     ## Remove dead individuals before calculating the fitness score
-#     population.remove_death()
-#
-#     # Set input parameters
-#     # apply multiprocessing to speed computation
-#
-#     # Perform action
-#     for bird in population.get_population():
-#          bird.predict()
-#
-#
-#
-#     #
-#     # for i in range(0, len(population.get_population())):
-#     #     p = multiprocessing.Process(target=population.get_element(i).predict)
-#     #     p.start()
-#     #     process_list.append(p)
-#     #
-#     # for process in process_list:
-#     #     process.join()
-#     #
-#     # with concurrent.futures.ProcessPoolExecutor() as executor:
-#     #     result = [executor.submit(bird.predict) for bird in population.get_population()]
-#     #     # Get result of the finished processes
-#     #     for process in concurrent.futures.as_completed(result):
-#     #         process.result()
-#
-#     # with concurrent.futures.ProcessPoolExecutor() as executor_:
-#     #     executor_.map(predict, population.get_population())
-#
-#     # input_params = np.array([[bird.x_position, bird.y_position, pipe_x, distance_from_pipe]])
-#
-#
-#
-#     ## Perform fitness calculation
-#     population.cal_fitness()
-#
-#     # If there's no population stop the program
-#     if len(population.get_population()) == 0:
-#         population.set_extinct()
-#
-#     if population.get_exinct() is True:
-#         ## Create new generation
-#         population = population.matting_pool()
-#         generation += 1
-#         print("New generation created")
-#         print(f">> Generation {generation}")
-#         print(f"Best score {population.get_best()}")
-#         running = False
-#
-#     #counter(30, timeout_flag)
-#
-#     # Check if either population got extinct or timeout
-#     #if timeout_flag is True:
-#     #    running = False
-#
-#     game.display.update()
-#     clock.tick(120)
-
-####
-# Methods
-
-#Time out function
-# def counter(timeout, timeout_flag):
-#     """
-#     Check if the time is exceeded.
-#     :param timeout: time to work
-#     """
-#     flag = timeout_flag
-#     if flag is not True:
-#         print("Counter begins !")
-#         global old_time
-#         current_time_ = datetime.datetime.now()
-#         desired_stop = (current_time_ + datetime.timedelta(minutes=timeout))#.strftime('%H:%M:%S')
-#         while current_time_ != desired_stop:
-#             if current_time_ != old_time:
-#                 # Update the time
-#                 old_time = current_time_
-#     else:
-#         # Timeout stop everything
-#         flag = True
-#
-#
-#
-#
-# # Set the floor into motion by providing 2 different images one after the other and both reducing them by one
-# def floor(f_x) -> None:
-#     """
-#     Set the floor into motion.
-#     Remember the screen ends that 576, so put another image right after its end and continue moving
-#     """
-#     screen.blit(floor_base, (f_x, 900))
-#     screen.blit(floor_base, (f_x + 576, 900))
-#
-#
-# # Create pipe
-# def create_pipes() -> tuple:
-#     """
-#     Create both upper and lower pipe
-#     :return: set of 2 types
-#     """
-#     random_pipe_pos = random.choice(pipe_height)
-#     bottom_pipe = pipe_image.get_rect(midtop=(700, random_pipe_pos))
-#     top_pipe = pipe_image.get_rect(midbottom=(700, random_pipe_pos - 300))
-#     return bottom_pipe, top_pipe
-#
-#
-# def move_pipes(pipelist) -> list:
-#     """
-#     Set the pipe image into motion by reducing it's X position by 5
-#     """
-#     for pipe in pipelist:
-#         pipe.centerx -= 5
-#     return pipelist
-#
-#
-# # Draw pipes
-# def draw_pipes(pipelist):
-#     """
-#     Draw the different pipe with the help of the pipe rectangles created with the function create_pipes().
-#     If the bottom of the pipe touches the end of screen draw it straight, else flip the image and draw.
-#     """
-#     for pipe in pipelist:
-#         if pipe.bottom >= 1024:
-#             screen.blit(pipe_image, pipe)
-#         else:
-#             flip_pipe = game.transform.flip(pipe_image, False, True)
-#             screen.blit(flip_pipe, pipe)
-#
-#
