@@ -1,1 +1,14 @@
-ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  7260.78531057  |  7280.774064943  |  20  |   0  |  0ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  7429.203555937  |  7432.32141586  |  3  |   0  |  0ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  7562.197338781  |  7582.115745445  |  20  |   0  |  0
+ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  7260.78531057  |  7280.774064943  |  20  |   0  |  0ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  7429.203555937  |  7432.32141586  |  3  |   0  |  0ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  7562.197338781  |  7582.115745445  |  20  |   0  |  0ID  |  start_time  | End_time  |  Time spent  |  Best score  |  Best fitness1  |  15491.768620148  |  15591.314478654  |  100  |   1  |  0ID   |   start_time   |  End_time   |   Time spent   |   Best score   |   Best fitness1   |   16362.17   |   16539.62   |   177   |    1  |  0ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   17675.03     |   17767.53     |   92     |    0    |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   17831.6     |   17904.99     |   73     |    1    |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   18296.47     |   18425.46     |   129     |    1    |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   18580.35     |   18657.33     |   77     |    0    |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   18883.62      |   18912.85     |   29         |      0      |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   19452.02      |   19562.71     |   111         |      1      |  0
+ID   |  start_time(s)  |  End_time(s)  |  Time spent(s)  |   Best score   |   Best fitness
+1    |   19727.72      |   19911.34     |   184         |      1      |  0

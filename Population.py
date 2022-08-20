@@ -75,54 +75,6 @@ class Population:
         #self.best_score = self.population[0]
 
 
-    def cal_fitness(self):
-        """
-        Calculate and assign fitness based on score of individuals, the fitness is calculated as follows:
-        fit = score/sum_score.
-        This ensures that every value will be < 1, and so doing, represents each bird probability of being chosen.
-        """
-        sum_ = 0
-        sorted_ = {}
-        # Get the sum of all scores
-        for i in range(0, len(self.population)):
-            sum_ += self.population[i].get_score()
-
-        for i in range(0, len(self.population)):
-            if self.population[i].get_score() <= 0 or sum <= 0:
-                fitness = 0
-                self.population[i].set_fitness(fitness)
-                sorted_.update({str(fitness) : self.population[i]})
-
-            else:
-                fitness = self.population[i].get_score()/sum_
-                self.population[i].set_fitness(int(fitness))
-                sorted_.update({str(fitness) : self.population[i]})
-
-        print(self.population)
-        print(sorted_)
-        print(sorted_.keys())
-        self.highest_fitness = sorted(list(sorted_.keys()))[0]
-
-
-    def __selection__(self):
-        """
-        Select the best couple of individuals performing well.
-        :return: chosen_ones, a couple of individuals
-        """
-        scores_ = {}
-
-
-        if len(self.population) >= 1:
-            # Relate score to individual, then sort by score
-            for i in range(0, len(self.population)):
-                scores_.update({str(self.population[i].get_fitness()): self.population[i]})
-
-            # Sort the keys(fitness score) in reverse order and then return the highest
-            keys = sorted(list(scores_.keys()), reverse=True)
-            # With keys sorted the best/ highest is located at first position
-            key = keys[0]
-            self.best_score = scores_[key].get_score()
-            return scores_[key]
 
             # if len(keys) >= 1:
             #     for key in keys[:2]:
@@ -135,30 +87,6 @@ class Population:
             #     # Get and set the best score in generation
             #     #self.best = sorted_population[0].get_score()
             #     return [sorted_population[0]]
-
-
-
-    # Matting pool
-    def matting_pool(self):
-        """
-        Perform matting on population individuals.
-        Choose the best 2 and make them share their weights with the rest of the population.
-
-        :return: new_population,  a list containing the new generation
-        """
-        new_population = []
-        chosen_one = self.__selection__()
-        # Use most fitted instances to reproduce with
-        if len(self.population) >= 1:
-            for element in self.population:
-                if chosen_one is not element:
-                        x_, y_ = self.__rand_position__()
-                        new_population.append(Bird(x_, y_, parents=[chosen_one, element]).mutation(0.1))
-
-            # add the parent to the generation
-            new_population.append(chosen_one)
-
-            return new_population
 
 
     def remove_death(self):
@@ -193,4 +121,7 @@ class Population:
 
         for p in proc:
             p.join()
+
+    def set_highestFitness(self, param):
+        self.highest_fitness = param
 

@@ -41,22 +41,20 @@ class Bird:
 
                 for i in range(0, len(self.brain.layers) - 1):
                     # Have the weights of each layer per parent
-                    limit = int(len(parent2_brain.layers[i]) * 0.2)
-                    parent1_layer = parent1_brain.layers[i][limit:]  # get 80% of the weight of the first parent
-                    parent2_layer = parent2_brain.layers[i][:limit]  # get 20% of the weight of the second parent
-                    base_weight = np.concatenate((parent2_layer, parent1_layer),
-                                                 axes=0)  # Concatenate the 2 arrays horizontally
+                    limit = int(len(parent2_brain.layers[i].get_weights()) * 0.2)
+                    parent1_layer = parent1_brain.layers[i].get_weights()[limit:]  # get 80% of the weight of the first parent
+                    parent2_layer = parent2_brain.layers[i].get_weights()[:limit]  # get 20% of the weight of the second parent
+                    base_weight = np.concatenate([parent2_layer, parent1_layer], axis=0)  # Concatenate the 2 arrays horizontally
 
                     # Save the weight on the layer
                     self.brain.layers[i].set_weights(base_weight)
 
             for i in range(0, len(self.brain.layers) - 1):
                 # Have the weights of each layer per parent
-                limit = int(len(parent2_brain.layers[i]) * 0.2)
-                parent1_layer = parent1_brain.layers[i][:limit]  # get 20% of the weight of the first parent
-                parent2_layer = parent2_brain.layers[i][limit:]  # get 80% of the weight of the second parent
-                base_weight = np.concatenate((parent1_layer, parent2_layer),
-                                             axes=0)  # Concatenate the 2 arrays horizontally
+                limit = int(len(parent2_brain.layers[i].get_weights()) * 0.2)
+                parent1_layer = parent1_brain.layers[i].get_weights()[:limit]  # get 20% of the weight of the first parent
+                parent2_layer = parent2_brain.layers[i].get_weights()[limit:]  # get 80% of the weight of the second parent
+                base_weight = np.concatenate([parent1_layer, parent2_layer], axis=0)  # Concatenate the 2 arrays horizontally
 
                 # Save the weight on the layer
                 self.brain.layers[i].set_weights(base_weight)
@@ -275,7 +273,8 @@ class Bird:
     def __mutation__(self, val, mutation_rate: float):
         if random.uniform(0, 1) > mutation_rate:
             # slightly modify the value
-            return lambda x: x + random.uniform(-0.1, 0.1)(val)
+            for i in range(0, len(val)):
+                val[i] = val[i] + random.uniform(-0.1, 0.1)
         else:
             return val
 
@@ -290,11 +289,13 @@ class Bird:
         :return: The instance of brain being mutated
         """
         if self.brain is not None:
-            # Mutating 1st layer
-            self.brain.layers[0].set_weights(self.__mutation__(self.brain.layers[0].weights, mutation_rate))
-            # self.brain.layer[0].set_weights(self.__mutation__(self.brain.layers[0].bias.numpy(), mutation_rate))
+            # Mutating layers
+            for layer in self.brain.layers:
+                layer = self.__mutation__(layer.get_weights(), mutation_rate)
+            #self.brain.layers[0].set_weights(result1)
+
             # Mutating 2nd layer
-            self.brain.layers[1].set_weights(self.__mutation__(self.brain.layers[0].weights, mutation_rate))
+            #self.brain.layers[1].set_weights(self.__mutation__(self.brain.layers[0].get_weights(), mutation_rate))
             # self.brain.layers[1].set_weights(self.__mutation__(self.brain.layers[0].weights, mutation_rate))
 
     def set_fitness(self, fitness):

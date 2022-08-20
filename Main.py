@@ -62,7 +62,7 @@ pipe_list = []
 ############################## Game Functions ###########################
 #########################################################################
 
-def draw_window(screen_, birds, pipes, base, score):
+def draw_window(screen_, birds, pipes, base, score, count):
     screen_.blit(background, (0, 0))
     # for bird in birds:
     #     bird.draw(screen_)
@@ -91,7 +91,9 @@ def draw_window(screen_, birds, pipes, base, score):
 
 
     text = STATS.render("Score: "+ str(score), 1, (255, 255, 255))
-    screen_.blit(text, (width - 10 - text.get_width(), 10))
+    count_ = STATS.render("Generation: " + str(count), 1, (255, 255, 255))
+    screen_.blit(count_, (width - 100 - text.get_width(), 10))
+    screen_.blit(text, (width - 10 - text.get_width(), 50))
 
     base.draw(screen_)
 
@@ -105,7 +107,9 @@ def draw_window(screen_, birds, pipes, base, score):
     # result.wait
 
 
-def main(population):
+def main(id : int, population):
+
+    generation_count = id
     population_ = population
     back_up = []
     screen_ = game.display.set_mode((width, length))
@@ -168,8 +172,8 @@ def main(population):
 
         # Create back another pipe since one is gone
         if add_pipe:
-            #for bird in birds:
-             #   bird.add_score()
+            for bird in birds:
+                bird.add_score()
             pipes.append(Pipe(550))
             # bird has successfully pass, so increase point counter
             score += 1
@@ -192,7 +196,7 @@ def main(population):
             running_ = False
 
         base_.move()
-        draw_window(screen_, birds, pipes, base_,score)
+        draw_window(screen_, birds, pipes, base_,score, generation_count)
 
     # Calculate the time spend before gotten extinct
     time_taken = round(end_clock - start_clock, 2)
@@ -201,7 +205,7 @@ def main(population):
 
 def run():
     # Create population
-    population = Population(1)
+    population = Population(3)
     eval_pop = GeneticEvaluation(population, 5)
     eval_pop.run(main)
     #print(main(3))

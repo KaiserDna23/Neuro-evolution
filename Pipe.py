@@ -68,9 +68,9 @@ class Pipe:
 
         # Check if bird is inbetween the 2 pipes
         # if the bird has pas the pipes + 30 pixels and its inbetween, grant a score
-        if bird.x_position == self.x + self.image.get_width() + 30:
-            if self.top < bird.y_position < self.bottom:
-                bird.add_score()
+        # if bird.x_position == self.x + self.image.get_width() + 30:
+        #     if self.top < bird.y_position < self.bottom:
+        #         bird.add_score()
 
         return False
 
